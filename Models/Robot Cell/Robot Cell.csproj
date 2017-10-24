@@ -81,6 +81,7 @@
     <Compile Include="Analysis\SimulationTests.cs" />
     <Compile Include="Analysis\ModelCheckingTests.cs" />
     <Compile Include="Analysis\FunctionalTests.cs" />
+    <Compile Include="Analysis\TestExecutor.cs" />
     <Compile Include="Modeling\Controllers\Agent.cs" />
     <Compile Include="Analysis\AnalysisMode.cs" />
     <Compile Include="Modeling\Controllers\Reconfiguration\FastController.cs" />
