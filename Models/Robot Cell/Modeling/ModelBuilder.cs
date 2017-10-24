@@ -172,6 +172,12 @@ namespace SafetySharp.CaseStudies.RobotCell.Modeling
 	        return this;
 	    }
 
+	    public ModelBuilder EnableLogging()
+	    {
+	        _model.Controller = new ConfigUpdateLogger(_model.Controller);
+	        return this;
+	    }
+
 	    public ModelBuilder DisableIntolerableFaults()
 	    {
 	        _model.Faults.MakeNondeterministic();

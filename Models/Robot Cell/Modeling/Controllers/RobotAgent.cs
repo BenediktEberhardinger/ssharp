@@ -309,9 +309,13 @@ namespace SafetySharp.CaseStudies.RobotCell.Modeling.Controllers
 			protected override bool CanApply(ProcessCapability capability)
 				=> capability.ProductionAction != ProductionAction.Drill && base.CanApply(capability);
 
-			protected override bool ApplyCurrentCapability()
-				=> (_currentCapability as ProcessCapability)?.ProductionAction != ProductionAction.Drill
-					&& base.ApplyCurrentCapability();
+		    protected override bool ApplyCurrentCapability()
+		    {   
+                
+                Console.WriteLine("Capability Applied");
+		        return (_currentCapability as ProcessCapability)?.ProductionAction != ProductionAction.Drill
+		               && base.ApplyCurrentCapability();
+		    }
 		}
 
 		[FaultEffect, Priority(2)]
@@ -320,9 +324,12 @@ namespace SafetySharp.CaseStudies.RobotCell.Modeling.Controllers
 			protected override bool CanApply(ProcessCapability capability)
 				=> capability.ProductionAction != ProductionAction.Insert && base.CanApply(capability);
 
-			protected override bool ApplyCurrentCapability()
-				=> (_currentCapability as ProcessCapability)?.ProductionAction != ProductionAction.Insert
-					&& base.ApplyCurrentCapability();
+		    protected override bool ApplyCurrentCapability()
+		    {
+                Console.WriteLine("Capability Applied");
+                return (_currentCapability as ProcessCapability)?.ProductionAction != ProductionAction.Insert
+                    && base.ApplyCurrentCapability();
+            } 
 		}
 
 		[FaultEffect, Priority(3)]
@@ -331,9 +338,12 @@ namespace SafetySharp.CaseStudies.RobotCell.Modeling.Controllers
 			protected override bool CanApply(ProcessCapability capability)
 				=> capability.ProductionAction != ProductionAction.Tighten && base.CanApply(capability);
 
-			protected override bool ApplyCurrentCapability()
-				=> (_currentCapability as ProcessCapability)?.ProductionAction != ProductionAction.Tighten
-					&& base.ApplyCurrentCapability();
+		    protected override bool ApplyCurrentCapability()
+		    {
+                Console.WriteLine("Capability Applied");
+                return (_currentCapability as ProcessCapability)?.ProductionAction != ProductionAction.Tighten
+		        && base.ApplyCurrentCapability();
+		    }
 		}
 
 		[FaultEffect, Priority(4)]
@@ -342,9 +352,12 @@ namespace SafetySharp.CaseStudies.RobotCell.Modeling.Controllers
 			protected override bool CanApply(ProcessCapability capability)
 				=> capability.ProductionAction != ProductionAction.Polish && base.CanApply(capability);
 
-			protected override bool ApplyCurrentCapability()
-				=> (_currentCapability as ProcessCapability)?.ProductionAction != ProductionAction.Polish
-					&& base.ApplyCurrentCapability();
+		    protected override bool ApplyCurrentCapability()
+		    {
+                Console.WriteLine("Capability Applied");
+                return (_currentCapability as ProcessCapability)?.ProductionAction != ProductionAction.Polish
+		        && base.ApplyCurrentCapability();
+		    }
 		}
 	}
 }

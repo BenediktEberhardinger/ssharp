@@ -67,7 +67,7 @@ namespace SafetySharp.Odp.Reconfiguration
 		{
 			_pathMatrix = new int[_availableAgents.Length, _availableAgents.Length];
 			_costMatrix = new int[_availableAgents.Length, _availableAgents.Length];
-
+            
 			for (var i = 0; i < _availableAgents.Length; ++i)
 			{
 				for (var j = 0; j < _availableAgents.Length; ++j)

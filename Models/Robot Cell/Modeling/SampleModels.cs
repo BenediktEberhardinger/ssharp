@@ -97,8 +97,11 @@ namespace SafetySharp.CaseStudies.RobotCell.Modeling
         private static Func<ModelBuilder, ModelBuilder> DefaultSetup<T>(AnalysisMode mode, bool verify) where T : IController
         {
             return builder => ChooseAnalysisMode(builder.ChooseController<T>()
-                                                        .EnableControllerVerification(verify)
-                                                        .CentralReconfiguration(), mode);
+                                                        .EnableControllerVerification(true)
+                                                        .EnableLogging()
+                                                        .CentralReconfiguration(), mode)
+                                                        ;
+
         }
 
         public static Model PerformanceMeasurement1<T>(AnalysisMode mode = AnalysisMode.AllFaults, bool verify = false)
@@ -183,7 +186,8 @@ namespace SafetySharp.CaseStudies.RobotCell.Modeling
 
                           .AddCart(Route(0, 1), Route(0, 2), Route(0, 3))
                           .AddCart(Route(1, 2), Route(0, 1))
-                          .AddCart(Route(2, 3));
+                          .AddCart(Route(2, 3))
+                          ;
         }
 
         public static ModelBuilder Ictss2(this ModelBuilder builder)
