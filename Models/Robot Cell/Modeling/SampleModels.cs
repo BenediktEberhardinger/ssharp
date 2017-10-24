@@ -43,7 +43,7 @@ namespace SafetySharp.CaseStudies.RobotCell.Modeling
             return DefaultSetup<T>(mode, false).Invoke(new ModelBuilder(nameof(Ictss1)).Ictss1()).Build();
         }
 
-        public static IEnumerable<Model> CreateDefaultConfigurations<T>(AnalysisMode mode, bool verify = false)
+        public static IEnumerable<Model> CreateDefaultConfigurations<T>(AnalysisMode mode = AnalysisMode.AllFaults, bool verify = false)
             where T : IController
         {
             return CreateConfigurations(b => b, DefaultSetup<T>(mode, verify));
