@@ -29,5 +29,10 @@ namespace SafetySharp.Odp
 		public override bool Equals(object obj) => obj is ConsumeCapability;
 
 		public override int GetHashCode() => 31;
+
+	    public override string ToString()
+	    {
+	        return CapabilityType.ToString();
+	    }
 	}
 }

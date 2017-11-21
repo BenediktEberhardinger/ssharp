@@ -172,9 +172,10 @@ namespace SafetySharp.CaseStudies.RobotCell.Modeling
 	        return this;
 	    }
 
-	    public ModelBuilder EnableLogging()
+	    public ModelBuilder EnableLogging(bool logging)
 	    {
-	        _model.Controller = new ConfigUpdateLogger(_model.Controller);
+            if(logging)
+	            _model.Controller = new ConfigUpdateLogger(_model.Controller, _model);
 	        return this;
 	    }
 

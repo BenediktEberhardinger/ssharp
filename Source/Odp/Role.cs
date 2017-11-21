@@ -85,5 +85,10 @@ namespace SafetySharp.Odp
 			role.IsLocked = locked;
 			return role;
 		}
+
+	    public override string ToString()
+	    {
+	        return CapabilitiesToApply.Aggregate(" ", (current, cap) => current + cap.ToString() + "; ");
+	    }
 	}
 }

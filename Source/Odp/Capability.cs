@@ -36,5 +36,10 @@ namespace SafetySharp.Odp
 		}
 
 		public abstract CapabilityType CapabilityType { get; }
+
+	    public override string ToString()
+	    {
+	        return CapabilityType.ToString();
+	    }
 	}
 }

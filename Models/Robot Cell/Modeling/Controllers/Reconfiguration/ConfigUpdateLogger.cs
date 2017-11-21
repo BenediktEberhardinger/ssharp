@@ -23,6 +23,12 @@
 namespace SafetySharp.CaseStudies.RobotCell.Modeling.Controllers.Reconfiguration
 {
     using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text;
     using System.Threading.Tasks;
     using SafetySharp.Modeling;
     using Odp;
@@ -31,18 +37,38 @@ namespace SafetySharp.CaseStudies.RobotCell.Modeling.Controllers.Reconfiguration
     public class ConfigUpdateLogger : IController
     {
         private readonly IController _controller;
+        private readonly Model _model;
 
-        public ConfigUpdateLogger(IController controller)
+        [NonDiscoverable, Hidden(HideElements = true)]
+        private readonly StreamWriter _sw;
+
+        [NonDiscoverable, Hidden]
+        private bool _namesWritten;
+
+        [Hidden]
+        private int counter = 0;
+
+        public ConfigUpdateLogger(IController controller, Model model)
         {
             _controller = controller;
+            _model = model;
+            var filePath = "testFile" + model.Name + ".txt";
+            _sw = File.AppendText(filePath);
         }
 
         public BaseAgent[] Agents => _controller.Agents;
 
         public async Task<ConfigurationUpdate> CalculateConfigurations(object context, ITask task)
         {
+            /*if (_namesWritten == false)
+            {
+                WriteFaultNames();
+                _namesWritten = true;
+            }*/
+            
             var config = await _controller.CalculateConfigurations(context, task);
-            ProcessResult(config);
+
+            WriteFaultActivations(config);
 
             return config;
         }
@@ -53,10 +79,28 @@ namespace SafetySharp.CaseStudies.RobotCell.Modeling.Controllers.Reconfiguration
             remove { _controller.ConfigurationsCalculated -= value; }
         }
 
-        protected void ProcessResult(ConfigurationUpdate configUpdate)
+        private void WriteFaultActivations(ConfigurationUpdate config)
         {
-            Console.WriteLine(configUpdate.ToString());
+            foreach (var t in _model.Faults)
+            {   
+                _sw.Write(t.IsActivated ? "1" : "0");
+                _sw.Write(", ");
+            }
+            _sw.Write(config.ToString());
+            _sw.WriteLine("");
+            _sw.Flush();
         }
 
+        private void WriteFaultNames()
+        {
+            foreach (var t in _model.Faults)
+            {
+                _sw.Write(t.Name);
+                _sw.Write(", ");
+                _sw.Flush();
+            }
+            _sw.WriteLine("");
+            _sw.Flush();
+        }
     }
 }

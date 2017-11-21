@@ -44,5 +44,10 @@ namespace SafetySharp.CaseStudies.RobotCell.Modeling.Controllers
 		}
 
 		public override int GetHashCode() => 79 + 13 * (int)ProductionAction;
+
+	    public override string ToString()
+	    {
+	        return ProductionAction.ToString();
+	    }
 	}
 }

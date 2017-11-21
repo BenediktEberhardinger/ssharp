@@ -22,7 +22,8 @@
 
 namespace SafetySharp.Odp.Reconfiguration
 {
-	using System.Collections.Generic;
+    using System;
+    using System.Collections.Generic;
 	using System.Linq;
 
 	public class ConfigurationUpdate
@@ -88,5 +89,20 @@ namespace SafetySharp.Odp.Reconfiguration
 					agent.AllocateRoles(_addedRoles[agent]);
 			}
 		}
+
+	    
+	    public override string ToString()
+	    {
+	        var result = "";
+            foreach(var agent in AffectedAgents)
+            {
+                result += "<" + agent.ID + ":";
+                var roles = _addedRoles.ContainsKey(agent) ? _addedRoles[agent] : null;
+                result = roles == null ? result + "(x)" : roles.Aggregate(result, (current, role) => current + "( " + role.ToString() + ")");
+                result += "> ,";
+            }
+	        // result += "]";
+	        return result;
+	    }
 	}
 }

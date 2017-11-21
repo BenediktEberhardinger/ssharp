@@ -29,7 +29,7 @@ namespace SafetySharp.CaseStudies.RobotCell.Analysis
 	using SafetySharp.Analysis;
 	using SafetySharp.Analysis.Heuristics;
     using Modeling;
-
+	using Modeling.Controllers.Reconfiguration;
 	using NUnit.Framework;
 
 	internal class BackToBackTests
@@ -43,10 +43,27 @@ namespace SafetySharp.CaseStudies.RobotCell.Analysis
 				enableHeuristics: true);
 		}
 
-	    internal static IEnumerable CreateConfigurationsCoalition()
+        [Test, Category("Back2BackTestingHeuristicsCentral")]
+        [TestCaseSource(nameof(CreateConfigurationCentral))]
+        public void DccaWithHeuristicsCentral(Model model)
         {
-            return SampleModels.CreateCoalitionConfigurations(verify: true)
-                .Select(model => new TestCaseData(model).SetName(model.Name + " (Coalition)"));
+            Dcca(model,
+                hazard: model.ReconfigurationMonitor.ReconfigurationFailure,
+                enableHeuristics: true);
+        }
+
+        internal static IEnumerable CreateConfigurationsCoalition()
+	    {
+	        var models = SampleModels.CreateCoalitionConfigurations(verify: true)
+	                                 .Select(model => new TestCaseData(model).SetName(model.Name + " (Coalition)"));
+
+	        return models;
+	    }
+
+        internal static IEnumerable CreateConfigurationCentral()
+        {
+            return SampleModels.CreateDefaultConfigurations<FastController>(verify: true, logging:true )
+                               .Select(model => new TestCaseData(model).SetName(model.Name));
         }
 
 		private void Dcca(Model model, Formula hazard, bool enableHeuristics)

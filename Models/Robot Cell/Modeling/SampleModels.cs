@@ -40,26 +40,26 @@ namespace SafetySharp.CaseStudies.RobotCell.Modeling
         public static Model DefaultInstance<T>(AnalysisMode mode = AnalysisMode.AllFaults)
             where T : IController
         {
-            return DefaultSetup<T>(mode, false).Invoke(new ModelBuilder(nameof(Ictss1)).Ictss1()).Build();
+            return DefaultSetup<T>(mode, false, false).Invoke(new ModelBuilder(nameof(Ictss1)).Ictss1()).Build();
         }
 
-        public static IEnumerable<Model> CreateDefaultConfigurations<T>(AnalysisMode mode = AnalysisMode.AllFaults, bool verify = false)
+        public static IEnumerable<Model> CreateDefaultConfigurations<T>(AnalysisMode mode = AnalysisMode.AllFaults, bool verify = false, bool logging = false)
             where T : IController
         {
-            return CreateConfigurations(b => b, DefaultSetup<T>(mode, verify));
+            return CreateConfigurations(b => b, DefaultSetup<T>(mode, verify, logging));
         }
 
-        public static IEnumerable<Model> CreateDefaultConfigurationsWithoutPlant<T>(AnalysisMode mode, bool verify = false)
+        public static IEnumerable<Model> CreateDefaultConfigurationsWithoutPlant<T>(AnalysisMode mode, bool verify = false, bool logging=false)
             where T : IController
         {
-            return CreateConfigurations(b => b.DisablePlants(), DefaultSetup<T>(mode, verify));
+            return CreateConfigurations(b => b.DisablePlants(), DefaultSetup<T>(mode, verify, logging));
         }
 
-        public static IEnumerable<Model> CreateCoalitionConfigurations(bool verify = false)
+        public static IEnumerable<Model> CreateCoalitionConfigurations(bool verify = false, bool logging=false)
         {
             return CreateConfigurations(
                 b => b.DisablePlants(),
-                b => b.UseCoalitionFormation().EnableControllerVerification(verify).DisableIntolerableFaults()
+                b => b.UseCoalitionFormation().EnableLogging(logging).EnableControllerVerification(verify).DisableIntolerableFaults()
             );
         }
 
@@ -94,11 +94,11 @@ namespace SafetySharp.CaseStudies.RobotCell.Modeling
             return configurations.Select(setup => postSetup(setup(preSetup(new ModelBuilder(setup.Method.Name)))).Build());
         }
 
-        private static Func<ModelBuilder, ModelBuilder> DefaultSetup<T>(AnalysisMode mode, bool verify) where T : IController
+        private static Func<ModelBuilder, ModelBuilder> DefaultSetup<T>(AnalysisMode mode, bool verify, bool logging) where T : IController
         {
             return builder => ChooseAnalysisMode(builder.ChooseController<T>()
-                                                        .EnableControllerVerification(true)
-                                                        .EnableLogging()
+                                                        .EnableControllerVerification(verify)
+                                                        .EnableLogging(logging)
                                                         .CentralReconfiguration(), mode)
                                                         ;
 
