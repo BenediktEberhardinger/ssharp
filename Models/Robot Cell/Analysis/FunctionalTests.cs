@@ -42,7 +42,7 @@ namespace SafetySharp.CaseStudies.RobotCell.Analysis
 		[Test]
 		public void DepthFirstSearch()
 		{
-			var model = SampleModels.DefaultInstance<FastController>(AnalysisMode.TolerableFaults);
+			var model = SampleModels.DefaultInstance<FastController>(AnalysisMode.TolerableFaults, true);
 
 			var modelChecker = new SSharpChecker { Configuration = { CpuCount = 1, StateCapacity = 1 << 20 } };
 			var result = modelChecker.CheckInvariant(model, true);

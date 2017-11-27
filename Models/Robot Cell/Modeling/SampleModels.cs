@@ -37,10 +37,10 @@ namespace SafetySharp.CaseStudies.RobotCell.Modeling
         private static readonly Func<ModelBuilder, ModelBuilder>[] _performanceEvaluationConfigurations =
             { FewAgentsHighRedundancy /*, ManyAgentsLowRedundancy, ManyAgentsLowRedundancy*/ };
 
-        public static Model DefaultInstance<T>(AnalysisMode mode = AnalysisMode.AllFaults)
+        public static Model DefaultInstance<T>(AnalysisMode mode = AnalysisMode.AllFaults, bool logging=false)
             where T : IController
         {
-            return DefaultSetup<T>(mode, false, false).Invoke(new ModelBuilder(nameof(Ictss1)).Ictss1()).Build();
+            return DefaultSetup<T>(mode, false, logging).Invoke(new ModelBuilder(nameof(Ictss1)).Ictss1()).Build();
         }
 
         public static IEnumerable<Model> CreateDefaultConfigurations<T>(AnalysisMode mode = AnalysisMode.AllFaults, bool verify = false, bool logging = false)

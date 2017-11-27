@@ -62,7 +62,7 @@ namespace SafetySharp.CaseStudies.RobotCell.Analysis
 
         internal static IEnumerable CreateConfigurationCentral()
         {
-            return SampleModels.CreateDefaultConfigurations<FastController>(verify: true, logging:true )
+            return SampleModels.CreateDefaultConfigurations<FastController>(verify: true, logging:false )
                                .Select(model => new TestCaseData(model).SetName(model.Name));
         }
 

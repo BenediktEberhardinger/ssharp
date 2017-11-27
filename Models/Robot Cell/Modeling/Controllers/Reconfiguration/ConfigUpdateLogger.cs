@@ -42,7 +42,7 @@ namespace SafetySharp.CaseStudies.RobotCell.Modeling.Controllers.Reconfiguration
         [NonDiscoverable, Hidden(HideElements = true)]
         private readonly StreamWriter _sw;
 
-        [NonDiscoverable, Hidden]
+        [Hidden]
         private bool _namesWritten;
 
         [Hidden]
@@ -52,7 +52,7 @@ namespace SafetySharp.CaseStudies.RobotCell.Modeling.Controllers.Reconfiguration
         {
             _controller = controller;
             _model = model;
-            var filePath = "testFile" + model.Name + ".txt";
+            var filePath = "testFile" + model.Name +  ".txt";
             _sw = File.AppendText(filePath);
         }
 
@@ -68,6 +68,16 @@ namespace SafetySharp.CaseStudies.RobotCell.Modeling.Controllers.Reconfiguration
             
             var config = await _controller.CalculateConfigurations(context, task);
 
+            var agentRoles = "";
+            foreach (var agent in Agents)
+            {
+                agentRoles += "<" + agent.ID + ":";
+                agentRoles = agent.AllocatedRoles == null || !agent.AllocatedRoles.Any() ? agentRoles + "( No Role )" :
+                    agent.AllocatedRoles.Aggregate(agentRoles, (current, role) => current + "( " + role.ToString() + ")");
+                agentRoles += ">, ";
+            }
+            _sw.Write(agentRoles);
+
             WriteFaultActivations(config);
 
             return config;
@@ -81,12 +91,14 @@ namespace SafetySharp.CaseStudies.RobotCell.Modeling.Controllers.Reconfiguration
 
         private void WriteFaultActivations(ConfigurationUpdate config)
         {
+          
             foreach (var t in _model.Faults)
             {   
                 _sw.Write(t.IsActivated ? "1" : "0");
                 _sw.Write(", ");
             }
             _sw.Write(config.ToString());
+            
             _sw.WriteLine("");
             _sw.Flush();
         }

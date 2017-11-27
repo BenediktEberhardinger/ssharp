@@ -88,7 +88,8 @@ namespace SafetySharp.Odp
 
 	    public override string ToString()
 	    {
-	        return CapabilitiesToApply.Aggregate(" ", (current, cap) => current + cap.ToString() + "; ");
+	        return CapabilitiesToApply == null || !CapabilitiesToApply.Any() ? " No Cap to Apply " : 
+                CapabilitiesToApply.Aggregate(" ", (current, cap) => current + cap.ToString() + "; ");
 	    }
 	}
 }

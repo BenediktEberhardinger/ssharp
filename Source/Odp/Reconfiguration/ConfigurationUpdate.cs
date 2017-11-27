@@ -25,8 +25,9 @@ namespace SafetySharp.Odp.Reconfiguration
     using System;
     using System.Collections.Generic;
 	using System.Linq;
+    using System.Security.Permissions;
 
-	public class ConfigurationUpdate
+    public class ConfigurationUpdate
 	{
 		private readonly Dictionary<BaseAgent, HashSet<Role>> _addedRoles = new Dictionary<BaseAgent, HashSet<Role>>();
 		private readonly Dictionary<BaseAgent, HashSet<Role>> _removedRoles = new Dictionary<BaseAgent, HashSet<Role>>();
@@ -96,13 +97,13 @@ namespace SafetySharp.Odp.Reconfiguration
 	        var result = "";
             foreach(var agent in AffectedAgents)
             {
-                result += "<" + agent.ID + ":";
+                result += (result == "" ? "<" : ", <") + agent.ID + ":";
                 var roles = _addedRoles.ContainsKey(agent) ? _addedRoles[agent] : null;
-                result = roles == null ? result + "(x)" : roles.Aggregate(result, (current, role) => current + "( " + role.ToString() + ")");
-                result += "> ,";
+                result = roles == null ? result + "( No Role )" : roles.Aggregate(result, (current, role) => current + "( " + role.ToString() + ")");
+                result += ">";
             }
-	        // result += "]";
-	        return result;
+
+            return result;
 	    }
 	}
 }
